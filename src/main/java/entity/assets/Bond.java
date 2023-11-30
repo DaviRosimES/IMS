@@ -6,6 +6,7 @@ public class Bond extends Asset{
     private int duration;
     private String issuer;
     private String creditRating;
+    private int assetId;
 
     // Constructor
     public Bond(String name, double price, double interestRate, int duration, String issuer, String creditRating) {

@@ -6,6 +6,7 @@ public class Stock extends Asset{
     private double dividendPerShare;
     private double marketCap;
     private String industrySector;
+    private int assetId;
 
     // Constructor
     public Stock(String name, double price, int numShares, double dividendPerShare, double marketCap, String industrySector) {

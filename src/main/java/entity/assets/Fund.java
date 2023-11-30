@@ -6,6 +6,7 @@ public class Fund extends Asset{
     private double managementFee;
     private String manager;
     private double historicalPerformance;
+    private int assetId;
 
     // Constructor
     public Fund(String name, double price, String type, double managementFee, String manager, double historicalPerformance){
