@@ -32,6 +32,31 @@ public class AssetDAO extends ConnectionDAO{
     }
 
     /**
+     * Updates an existing asset in the database with the provided Asset information.
+     * Opens a connection to the database, prepares and executes an SQL UPDATE statement
+     * updating (name, price) based on the asset ID, and then closes the database connection.
+     *
+     * @param asset The Asset object containing updated asset information (name, price).
+     * @see #openConnectionToDatabase()
+     * @see #closeConnectionToDatabase()
+     */
+    public void updateAsset(Asset asset) {
+        openConnectionToDatabase();
+        String sql = "UPDATE assets SET name = ?, price = ? WHERE id = ?";
+        try {
+            pst = con.prepareStatement(sql);
+            pst.setString(1, asset.getName());
+            pst.setDouble(2, asset.getPrice());
+            pst.setInt(3, asset.getAssetId());
+            pst.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("Error updating asset: " + e.getMessage());
+        } finally {
+            closeConnectionToDatabase();
+        }
+    }
+
+    /**
      * Obtém um objeto Asset com base no ID.
      *
      * @param assetId O ID do ativo.
@@ -41,7 +66,7 @@ public class AssetDAO extends ConnectionDAO{
      */
     public Asset getAssetById(int assetId) {
         openConnectionToDatabase();
-        String sql = "SELECT * FROM asset WHERE id = ?";
+        String sql = "SELECT * FROM assets WHERE id = ?";
         try {
             pst = con.prepareStatement(sql);
             pst.setInt(1, assetId);

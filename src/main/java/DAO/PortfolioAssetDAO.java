@@ -35,6 +35,29 @@ public class PortfolioAssetDAO extends ConnectionDAO{
     }
 
     /**
+     * Atualiza as informações de um ativo associado a um portfólio.
+     *
+     * @param portfolio O portfólio ao qual o ativo está associado.
+     * @param asset     O ativo a ser atualizado.
+     * @see #openConnectionToDatabase()
+     * @see #closeConnectionToDatabase()
+     */
+    public void updateAssetInPortfolio(Portfolio portfolio, Asset asset) {
+        openConnectionToDatabase();
+        String sql = "UPDATE portfolio_has_assets SET asset_id = ? WHERE portfolio_id = ?";
+        try {
+            pst = con.prepareStatement(sql);
+            pst.setInt(1, asset.getAssetId());
+            pst.setInt(2, portfolio.getPortfolioId());
+            pst.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("Erro ao atualizar ativo no portfólio: " + e.getMessage());
+        } finally {
+            closeConnectionToDatabase();
+        }
+    }
+
+    /**
      * Exibe informações de todos os ativos associados a um portfólio.
      *
      * @param portfolio O portfólio para o qual exibir os ativos.

@@ -29,5 +29,9 @@ public class Asset {
         return assetId;
     }
 
+    public void setPrice(double price){
+        this.price = price;
+    }
+
     // Methods
 }

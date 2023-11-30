@@ -1,5 +1,6 @@
 package entity.user;
 
+import DAO.AssetDAO;
 import DAO.PortfolioDAO;
 import entity.assets.Asset;
 
@@ -39,7 +40,9 @@ public class Portfolio {
     }
 
     public void updateTotalBalance(Asset asset){
-        this.totalBalance += asset.getPrice();
+        this.totalBalance = asset.getPrice();
+        PortfolioDAO portfolioDAO = new PortfolioDAO();
+        portfolioDAO.updatePortfolio(this);
     }
 
 }
