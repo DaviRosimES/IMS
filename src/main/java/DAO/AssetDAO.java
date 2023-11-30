@@ -12,23 +12,50 @@ public class AssetDAO extends ConnectionDAO{
      * inserting (name, price, portfolio_id), and then closes the database connection.
      *
      * @param asset        The Asset object containing asset information (name, price).
-     * @param portfolioId  The ID of the associated portfolio in the database.
      * @see #openConnectionToDatabase()
      * @see #closeConnectionToDatabase()
      */
-    public void insertAsset(Asset asset, int portfolioId) {
+    public void insertAsset(Asset asset) {
         openConnectionToDatabase();
-        String sql = "INSERT INTO asset (name, price, protfolio_id) values(?, ?, ?)";
+        String sql = "INSERT INTO assets (id, name, price) values(?, ?, ?)";
         try {
             pst = con.prepareStatement(sql);
-            pst.setString(1, asset.getName());
-            pst.setDouble(2, asset.getPrice());
-            pst.setInt(3, portfolioId);
+            pst.setInt(1, asset.getAssetId());
+            pst.setString(2, asset.getName());
+            pst.setDouble(3, asset.getPrice());
             pst.execute();
         } catch (SQLException e) {
             System.out.println("Error: " + e.getMessage());
         } finally {
             closeConnectionToDatabase();
         }
+    }
+
+    /**
+     * Obtém um objeto Asset com base no ID.
+     *
+     * @param assetId O ID do ativo.
+     * @return Um objeto Asset ou null se o ativo não for encontrado.
+     * @see #openConnectionToDatabase()
+     * @see #closeConnectionToDatabase()
+     */
+    public Asset getAssetById(int assetId) {
+        openConnectionToDatabase();
+        String sql = "SELECT * FROM asset WHERE id = ?";
+        try {
+            pst = con.prepareStatement(sql);
+            pst.setInt(1, assetId);
+            rs = pst.executeQuery();
+            if (rs.next()) {
+                String name = rs.getString("name");
+                double price = rs.getDouble("price");
+                return new Asset(name, price);
+            }
+        } catch (SQLException e) {
+            System.out.println("Erro ao obter ativo por ID: " + e.getMessage());
+        } finally {
+            closeConnectionToDatabase();
+        }
+        return null;
     }
 }

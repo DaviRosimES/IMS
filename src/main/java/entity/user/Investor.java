@@ -17,7 +17,7 @@ public class Investor {
         this.password = password;
         this.email = email;
 
-        portfolio = new Portfolio(this.cpf);
+        portfolio = new Portfolio();
     }
 
     // Getters
@@ -35,6 +35,10 @@ public class Investor {
 
     public String getEmail() {
         return email;
+    }
+
+    public Portfolio getPortfolio() {
+        return portfolio;
     }
 
     // Methods
