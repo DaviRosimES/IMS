@@ -1,11 +1,14 @@
 package entity.user;
 
+import DAO.InvestorDAO;
+
 public class Investor {
     //Attributes
     private String name;
     private String cpf;
     private String password;
     private String email;
+    private Portfolio portfolio;
 
     // Constructor
     public Investor(String name, String cpf, String password, String email){
@@ -13,6 +16,8 @@ public class Investor {
         this.name = name;
         this.password = password;
         this.email = email;
+
+        portfolio = new Portfolio(this.cpf);
     }
 
     // Getters

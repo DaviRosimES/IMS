@@ -16,14 +16,15 @@ public class InvestorDAO extends ConnectionDAO{
      * @see #openConnectionToDatabase()
      * @see #closeConnectionToDatabase()
      */
-    public void insertUser(Investor investor) {
+    public void insertInvestor(Investor investor) {
         openConnectionToDatabase();
-        String sql = "INSERT INTO user (cpf, name, password, email) values(?, ?, ?)";
+        String sql = "INSERT INTO investors (cpf, name, password, email) values(?, ?, ?, ?)";
         try {
             pst = con.prepareStatement(sql);
-            pst.setString(1, investor.getName());
-            pst.setString(2, investor.getPassword());
-            pst.setString(3, investor.getEmail());
+            pst.setString(1, investor.getCpf());
+            pst.setString(2, investor.getName());
+            pst.setString(3, investor.getPassword());
+            pst.setString(4, investor.getEmail());
             pst.execute();
         } catch (SQLException e) {
             System.out.println("Erro: " + e.getMessage());
@@ -38,12 +39,10 @@ public class InvestorDAO extends ConnectionDAO{
      * creates Investor objects from the result set, prints information to the console,
      * and then closes the database connection.
      *
-     * @return ArrayList of Investor objects representing all investors in the database.
      * @see #openConnectionToDatabase()
      * @see #closeConnectionToDatabase()
      */
-    public ArrayList<Investor> selectAllInvestors() {
-        ArrayList<Investor> investors = new ArrayList<>();
+    public void selectAllInvestors() {
         openConnectionToDatabase();
         String sql = "SELECT * FROM investors";
         try {
@@ -51,17 +50,16 @@ public class InvestorDAO extends ConnectionDAO{
             rs = st.executeQuery(sql);
             System.out.println("List of investors: ");
             while (rs.next()) {
-                Investor investorAux = new Investor(rs.getString("cpf"),rs.getString("nome"),rs.getString("password"), rs.getString("email"));
+                Investor investorAux = new Investor(rs.getString("name"),rs.getString("cpf"),rs.getString("password"), rs.getString("email"));
                 System.out.println("nome = " + investorAux.getName());
+                System.out.println("cpf = " + investorAux.getCpf());
                 System.out.println("email = " + investorAux.getEmail());
                 System.out.println("--------------------------------");
-                investors.add(investorAux);
             }
         } catch (SQLException e) {
             System.out.println("Erro: " + e.getMessage());
         } finally {
             closeConnectionToDatabase();
         }
-        return investors;
     }
 }
